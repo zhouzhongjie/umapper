@@ -10,7 +10,7 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 public class MyBatisUtil  { 
     private  final static SqlSessionFactory sqlSessionFactory; 
     static { 
-       String resource = "com/exam/mapper/mybatis-config.xml"; 
+       String resource = "com/umapper/dao/mybatis-config.xml"; 
        Reader reader = null; 
        try { 
            reader = Resources.getResourceAsReader(resource); 
