@@ -1,23 +1,16 @@
 package com.umapper.action;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.jdom.Document;
-import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.XMLOutputter;
 
-import com.umapper.dao.UserDao;
-import com.umapper.po.User;
+import com.umapper.message.WxMenu;
+import com.umapper.message.WxMenuItem;
+import com.umapper.message.WxMsgConstants;
+import com.umapper.message.WxRequest;
+import com.umapper.message.WxRequestItf;
+import com.umapper.message.WxResponse;
 import com.umapper.service.UserService;
-import com.umapper.util.MyBatisUtil;
 
 /**
  * 微信所有接口入口
@@ -34,46 +27,18 @@ public class PushManage {
 		String FromName = "";
 		String type = "";
 		String content = "";
-		String con = "";
-		String event = "";//自定义按钮事件请求
-		String eKey = "";//事件请求key值
-			
-		try {
-			
-			SAXBuilder sax = new SAXBuilder(); 
-			Document doc = sax.build(is);
-			//获得文件的根元素
-			Element root = doc.getRootElement();
-					
-			//获得根元素的第一级子节点
-			List list = root.getChildren();
-			for(int j=0;j<list.size();j++){
-				//获得结点
-				Element first = (Element) list.get(j);
-	
-				if(first.getName().equals("ToUserName")){
-					toName = first.getValue().trim();
-				}else if(first.getName().equals("FromUserName")){
-					FromName = first.getValue().trim();
-				}else if(first.getName().equals("MsgType")){
-					type = first.getValue().trim();
-				}else if(first.getName().equals("Content")){
-					con = first.getValue().trim();
-				}else if(first.getName().equals("Event")){
-					event = first.getValue().trim();
-				}else if(first.getName().equals("EventKey")){
-					eKey = first.getValue().trim();
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		
+		WxRequestItf request = new WxRequest(is);
+		toName = request.getToName();
+		FromName = request.getFromName();
+		type = request.getMsgType();
 		
 		if(type.equals("event")){
-			if(event.equals("subscribe")){//此为关注事件
+			if(request.getAttribute(WxMsgConstants.ATTR_EVENT_EVENT).equals("subscribe")){//此为关注事件
 				content = "您好，欢迎关注我！";
 			}
 		}else if(type.equals("text")){
+			String con = request.getAttribute(WxMsgConstants.ATTR_TEXT_CONTENT);
 			if(con.equals("help")||con.equals("帮助")||con.equals("?")||con.equals("？")){
 				content = "帮助中心\n\n";
 			}else if(con.equals("bind")||con.equals("绑定")){
@@ -105,111 +70,65 @@ public class PushManage {
 			}else{
 				content = "我不懂，你再解释一下吧!";
 			}
+		}		else if (type.equals(WxMsgConstants.MSGTYPE_VOICE))
+		{
+			String mediaId = request.getAttribute(WxMsgConstants.ATTR_VOICE_MEDIAID);
+			content = "收到一条语音消息,mediaId=" + mediaId;
+			return WxResponse.createVoiceResponse(toName, FromName, mediaId).toString();
 		}
-		//以下为自定义按钮事件
-		if(eKey.equals("music")){//音乐请求
-			returnStr = getBackXMLTypeMusic(toName, FromName, "http://view.online.zcom.com/full/16107/風之誓言.mp3");
-		}else if(eKey.equals("img")){//图片请求
-			content = "http://a.hiphotos.baidu.com/album/w%3D2048/sign=61aa038f622762d0803ea3bf94d409fa/d62a6059252dd42ae072bd07023b5bb5c9eab827.jpg";
-			returnStr = getBackXMLTypeImg(toName, FromName, content);
-		}else{//无自定义按钮返回上面的文本信息
-			returnStr = getBackXMLTypeText(toName, FromName, content);
+		else if (type.equals(WxMsgConstants.MSGTYPE_LOCATION))
+		{
+			String locationX = request.getAttribute(WxMsgConstants.ATTR_LOCATION_X);
+			String locationY = request.getAttribute(WxMsgConstants.ATTR_LOCATION_Y);
+			content = "已收到你的位置:x=" + locationX + ", y=" + locationY;
 		}
-		return returnStr;
-	}
-	
-	public String getBackXMLTypeText(String toName, String FromName, String content){
-		
-		String returnStr = "";
-		
-		SimpleDateFormat format=new SimpleDateFormat("yyyyMMddHHmmss");
-		String times = format.format(new Date());
-		
-		Element rootXML = new Element("xml");
-		
-		rootXML.addContent(new Element("ToUserName").setText(FromName));
-		rootXML.addContent(new Element("FromUserName").setText(toName));
-		rootXML.addContent(new Element("CreateTime").setText(times));
-		rootXML.addContent(new Element("MsgType").setText("text"));
-		rootXML.addContent(new Element("Content").setText(content));
-
-		Document doc = new Document(rootXML); 
-		
-		XMLOutputter XMLOut = new XMLOutputter();  
-		returnStr = XMLOut.outputString(doc);
-
-		return returnStr;
-	}
-	
-	public String getBackXMLTypeImg(String toName, String FromName, String content){
-		
-		String returnStr = "";
-
-		SimpleDateFormat format=new SimpleDateFormat("yyyyMMddHHmmss");
-		String times = format.format(new Date());
-		
-		Element rootXML = new Element("xml");
-		
-		rootXML.addContent(new Element("ToUserName").setText(FromName));
-		rootXML.addContent(new Element("FromUserName").setText(toName));
-		rootXML.addContent(new Element("CreateTime").setText(times));
-		rootXML.addContent(new Element("MsgType").setText("news"));
-		rootXML.addContent(new Element("ArticleCount").setText("3"));
-		
-		Element fXML = new Element("Articles");
-		Element mXML = null;
-
-		String url = "http://www.baidu.com";
-		String ss = "";
-		for(int i = 1 ;i<=3;i++){
-			mXML = new Element("item");
-			mXML.addContent(new Element("Title").setText("图片"+i));
-			mXML.addContent(new Element("Description").setText("美女"+i));
-			mXML.addContent(new Element("PicUrl").setText(ss));
-			mXML.addContent(new Element("Url").setText(url));
-			fXML.addContent(mXML);
+		else if (type.equals(WxMsgConstants.MSGTYPE_VIDEO))
+		{
+			content = "收到视频";
+			String mediaId = request.getAttribute(WxMsgConstants.ATTR_VIDEO_MEDIAID);
+			return WxResponse.createVideoResponse(toName, FromName, mediaId, mediaId).toString();
 		}
-		rootXML.addContent(fXML);
-		
-		Document doc = new Document(rootXML); 
-		
-		XMLOutputter XMLOut = new XMLOutputter();  
-		returnStr = XMLOut.outputString(doc);
-
+		else if (type.equals(WxMsgConstants.MSGTYPE_IMAGE))
+		{
+			content = "收到图片";
+			String mediaId = request.getAttribute(WxMsgConstants.ATTR_IMAGE_MEDIAID);
+			return WxResponse.createImageResponse(toName, FromName, mediaId).toString();
+		}
+		else if (type.equals(WxMsgConstants.MSGTYPE_LINK))
+		{
+			content = "收到链接";
+		}
+		returnStr = WxResponse.createTextResponse(toName, FromName, content).toString();
 		return returnStr;
 	}
 	
-	public String getBackXMLTypeMusic(String toName, String FromName, String content){
+	protected WxMenu createMenu()
+	{
+		//创建一级菜单：显示进展
+		WxMenuItem menu1 = WxMenuItem.createMenuItem("进展", false);
+		menu1.setClick("MAIN_MENU_DEVELOPMENT", WxMenuItem.CONTENT_DEVELOP);
 		
-		String returnStr = "";
+		//创建一级菜单：显示计划
+		WxMenuItem menu2 = WxMenuItem.createMenuItem("计划", false);
+		menu2.setClick("MAIN_MENU_PLAN", WxMenuItem.CONTENT_PLAN);
+		
+		//创建一级菜单：帮助
+		WxMenuItem menu3 = WxMenuItem.createMenuItem("帮助", false);
 
-		SimpleDateFormat format=new SimpleDateFormat("yyyyMMddHHmmss");
-		String times = format.format(new Date());
+		//创建帮助的二级菜单：使用说明
+		WxMenuItem subMenu1 = WxMenuItem.createMenuItem("使用说明", true);
+		subMenu1.setClick("MAIN_MENU_HELP_HELP", WxMenuItem.CONTENT_HELP);
+		WxMenuItem subMenu2 = WxMenuItem.createMenuItem("支持的命令", true);
+		subMenu2.setClick("MAIN_MENU_HELP_SUPPORTS", WxMenuItem.CONTENT_SUPPORT_CMD);
+		menu3.addChild(subMenu1);
+		menu3.addChild(subMenu2);
 		
-		Element rootXML = new Element("xml");
-		
-		rootXML.addContent(new Element("ToUserName").setText(FromName));
-		rootXML.addContent(new Element("FromUserName").setText(toName));
-		rootXML.addContent(new Element("CreateTime").setText(times));
-		rootXML.addContent(new Element("MsgType").setText("music"));
-
-		Element mXML = new Element("Music");
-		
-		mXML.addContent(new Element("Title").setText("音乐"));
-		mXML.addContent(new Element("Description").setText("音乐让人心情舒畅！"));
-		mXML.addContent(new Element("MusicUrl").setText(content));
-		mXML.addContent(new Element("HQMusicUrl").setText(content));
-		
-		rootXML.addContent(mXML);
-
-		Document doc = new Document(rootXML); 
-		
-		XMLOutputter XMLOut = new XMLOutputter();  
-		returnStr = XMLOut.outputString(doc);
-
-		return returnStr;
+		//将子菜单放入主菜单中
+		WxMenu menu = new WxMenu();
+		menu.addSubMenu(menu1);
+		menu.addSubMenu(menu2);
+		menu.addSubMenu(menu3);
+		return menu;
 	}
-	
-	
 	
 }
