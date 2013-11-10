@@ -89,11 +89,10 @@
 			
 			<div class="row-fluid">
 				<div class="span12">
-					<div class="box span4" style="height:500px">
+					<div class="box span4" style="height:550px">
 					模拟屏幕显示
 					</div>
-					
-					<div class="box span7" style="height:500px">
+					<div class="box span7" style="height:550px;width:700px">
 					<form class="form-horizontal">
 							<fieldset>
 								<div class="control-group">
@@ -128,7 +127,13 @@
 								  <input type="file">
 								</div>
 							  </div>
-							  <div class="form-actions" style="margin-top:250px">
+							  <div class="control-group">
+								  <label class="control-label" for="textarea2">描述</label>
+								  <div class="controls">
+									<textarea class="cleditor" id="textarea2" rows="3"></textarea>
+								  </div>
+							  </div>
+							  <div class="form-actions" style="margin-top:5px">
 								<button type="submit" class="btn btn-primary">Save changes</button>
 								<button class="btn">Cancel</button>
 							  </div>
