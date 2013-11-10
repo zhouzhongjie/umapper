@@ -197,7 +197,9 @@
 						{ "sTitle": "type", "sClass": "center"},
 						{ "sTitle": "url", "sClass": "center" },
 						{ "sTitle": "action", "sClass": "center" }
-					]
+					]//,
+					 //"sAjaxSource": "weisite?action=getweisite",
+				     //"sAjaxDataProp": "weisitelist"
 				} );	
 			} );
 		</script>

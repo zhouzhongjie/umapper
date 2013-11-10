@@ -134,7 +134,7 @@
 								  </div>
 							  </div>
 							  <div class="form-actions" style="margin-top:5px">
-								<button type="submit" class="btn btn-primary">Save changes</button>
+								<button type="submit" class="btn btn-primary">Save</button>
 								<button class="btn">Cancel</button>
 							  </div>
 							</fieldset>

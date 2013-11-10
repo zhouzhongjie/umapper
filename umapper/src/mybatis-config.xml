@@ -16,14 +16,28 @@
 				<transactionManager type="JDBC"/>
 				<dataSource type="POOLED">
 					<property name="driver" value="com.mysql.jdbc.Driver"/>
+					<property name="url" value="jdbc:mysql://localhost:3306/test"/>
+					<property name="username" value="root"/>
+					<property name="password" value=""/>
+				</dataSource>
+			</environment>
+		</environments>
+		<!--这里添加的是执行CRUD操作的接口对应的配置文件(xml文件)
+		<environments default="development">
+			<environment id="development">
+				<transactionManager type="JDBC"/>
+				<dataSource type="POOLED">
+					<property name="driver" value="com.mysql.jdbc.Driver"/>
 					<property name="url" value="jdbc:mysql://sqld.duapp.com:4050/koxxKHnMwASxdQWbsAIn"/>
 					<property name="username" value="FKs2dO4zWjxGlIPSpG1WpjK5"/>
 					<property name="password" value="5UXTuhGD0Va33Ov9LMUuCgrODxESfuSu"/>
 				</dataSource>
 			</environment>
 		</environments>
+		-->
 		<!--这里添加的是执行CRUD操作的接口对应的配置文件(xml文件)-->
 		<mappers>
-			<mapper resource="com/umapper/dao/xml/User.xml"/>
+			<mapper resource="com/umapper/dao/xml/User.xml"/> 
+			<mapper resource="com/umapper/dao/xml/WeiSite.xml"/> 
 		</mappers>
 	</configuration>
