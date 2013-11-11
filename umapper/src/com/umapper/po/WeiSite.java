@@ -6,6 +6,15 @@ public class WeiSite {
 	private String type;
 	private String picture;
 	private String description;
+	private String id;
+	
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;

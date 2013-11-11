@@ -192,16 +192,30 @@
 			
 			$(document).ready(function() {
 				$('#weitable').dataTable( {
-					"aaData": aDataSet,
+					//"aaData": aDataSet,
 					"aoColumns": [
 						{ "sTitle": "id", "sClass": "center" },
 						{ "sTitle": "name", "sClass": "center" },
 						{ "sTitle": "type", "sClass": "center"},
 						{ "sTitle": "url", "sClass": "center" },
 						{ "sTitle": "action", "sClass": "center" }
-					]//,
+					],
 					 //"sAjaxSource": "weisite?action=getweisite",
 				     //"sAjaxDataProp": "weisitelist"
+				"bProcessing": true,
+				"bServerSide": true,
+				"sPaginationType": "full_numbers",
+				"sAjaxSource": "weisite?action=getweisite",
+				
+				"fnServerData": function ( sSource, aoData, fnCallback ) {
+				$.ajax( {
+				"dataType": 'json',
+				"type": "POST",
+				"url": sSource,
+				"data": aoData,
+				"success": fnCallback
+				} );
+				}
 				} );	
 			} );
 		</script>

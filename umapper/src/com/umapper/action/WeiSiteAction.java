@@ -61,9 +61,9 @@ public class WeiSiteAction extends HttpServlet {
 		
 		System.out.println("ddddddddddd"+site);
 		
-		//String json = "{'weisitelist':[['201311092321000','home','ten','http://localhost:8080/site/201311092321000','modify']]}";
+		String json = "{'weisitelist':[['201311092321000','home','ten','http://localhost:8080/site/201311092321000','modify']]}";
 		
-		//response.getWriter().write(json);
+		response.getWriter().write(json);
 		
 	}
 	
