@@ -1,3 +1,5 @@
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
+
 <div class="span2 main-menu-span">
 	<div class="well nav-collapse sidebar-nav">
 		<ul class="nav nav-tabs nav-stacked main-menu">
