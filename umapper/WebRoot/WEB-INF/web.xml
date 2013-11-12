@@ -21,4 +21,12 @@
 		<servlet-name>WeiSiteAction</servlet-name>
 		<url-pattern>/weisite</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>FileManager</servlet-name>
+		<servlet-class>com.umapper.action.FileManager</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>FileManager</servlet-name>
+		<url-pattern>/FileManager</url-pattern>
+	</servlet-mapping>
 </web-app>
