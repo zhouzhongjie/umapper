@@ -13,4 +13,12 @@
 		<servlet-name>WeixinAction</servlet-name>
 		<url-pattern>/wbchat</url-pattern>
 	</servlet-mapping>
+  	<servlet>
+		<servlet-name>WeiSiteAction</servlet-name>
+		<servlet-class>com.umapper.action.WeiSiteAction</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>WeiSiteAction</servlet-name>
+		<url-pattern>/weisite</url-pattern>
+	</servlet-mapping>
 </web-app>

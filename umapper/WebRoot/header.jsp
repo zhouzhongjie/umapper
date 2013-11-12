@@ -1,3 +1,5 @@
+<%@ page language="java" pageEncoding="UTF-8" contentType="text/html;charset=utf-8"%>
+
 <div class="navbar">
 		<div class="navbar-inner">
 			<div class="container-fluid">
