@@ -14,5 +14,4 @@
             expiration="access 1 months"
             path="/**.html" />
     </static-files>
-	<property name="java.util.logging.level" value="WARNING"/>
 </du-web-app>

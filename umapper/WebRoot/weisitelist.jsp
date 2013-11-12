@@ -194,11 +194,11 @@
 				$('#weitable').dataTable( {
 					//"aaData": aDataSet,
 					"aoColumns": [
-						{ "sTitle": "id", "sClass": "center" },
-						{ "sTitle": "name", "sClass": "center" },
-						{ "sTitle": "type", "sClass": "center"},
-						{ "sTitle": "url", "sClass": "center" },
-						{ "sTitle": "action", "sClass": "center" }
+						{ "mDataProp": "id","sTitle": "id", "sClass": "center" },
+						{ "mDataProp": "name","sTitle": "name", "sClass": "center" },
+						{ "mDataProp": "type","sTitle": "type", "sClass": "center"},
+						{ "mDataProp": "url","sTitle": "url", "sClass": "center" },
+						{ "mDataProp": null,"sTitle": "action", "sClass": "center" }
 					],
 					 //"sAjaxSource": "weisite?action=getweisite",
 				     //"sAjaxDataProp": "weisitelist"
@@ -206,16 +206,11 @@
 				"bServerSide": true,
 				"sPaginationType": "full_numbers",
 				"sAjaxSource": "weisite?action=getweisite",
-				
-				"fnServerData": function ( sSource, aoData, fnCallback ) {
-				$.ajax( {
-				"dataType": 'json',
-				"type": "POST",
-				"url": sSource,
-				"data": aoData,
-				"success": fnCallback
-				} );
-				}
+			    "sServerMethod": "POST",
+			    "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
+		            /* Append the grade to the default row class name */
+		                $('td:eq(4)', nRow).html( '<a href="weisite.jsp">修改</a>' );
+		        },
 				} );	
 			} );
 		</script>
