@@ -11,6 +11,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.jdom.JDOMException;
@@ -61,9 +64,18 @@ public class WeiSiteAction extends HttpServlet {
 		
 		System.out.println("ddddddddddd"+site);
 		
+		//JSONObject jo = JSONObject.fromObject(site);
+		
+		JSONArray ja = JSONArray.fromObject(site);
+		
+		System.out.println(ja.toString());
+		
+		String result = "{\"sEcho\": 1,\"iTotalRecords\": 20,\"iTotalDisplayRecords\": 20,\"aaData\":" +ja.toString()+"}";
+		
 		String json = "{'weisitelist':[['201311092321000','home','ten','http://localhost:8080/site/201311092321000','modify']]}";
 		
-		response.getWriter().write(json);
+		response.setContentType("text/html; charset=UTF-8");
+		response.getWriter().write(result);
 		
 	}
 	
