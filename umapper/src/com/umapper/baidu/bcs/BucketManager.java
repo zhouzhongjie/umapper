@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -140,12 +138,13 @@ public final class BucketManager{
 	 * @param request 文件上传的post请求
 	 * @return
 	 */
-	public Map<String, String> putFile(BaiduBCS bcs, String bucket, HttpServletRequest request)
+	public List<MaterialObject> putFile(BaiduBCS bcs, String bucket, HttpServletRequest request)
 	{
         DiskFileItemFactory diskFactory = new DiskFileItemFactory();       
         ServletFileUpload upload = new ServletFileUpload(diskFactory);  
         List fileItems = null;
-        Map<String, String> fileUrls = new HashMap<String, String>();
+        List<MaterialObject> materials = new ArrayList<MaterialObject>();
+        
 		try {
 			fileItems = upload.parseRequest(request);
 	        Iterator iter = fileItems.iterator();  
@@ -164,7 +163,6 @@ public final class BucketManager{
 	    		String object = "/" + item.getName();
 	    		if (isFileExist(bcs, bucket, object))
 	    		{
-	    			fileUrls.put(item.getName(), "already exist.");
 	    			continue;
 	    		}
 	        	ObjectMetadata metadata = new ObjectMetadata();
@@ -182,7 +180,9 @@ public final class BucketManager{
 	    			url = urlOrigin.substring(0, urlOrigin.length()-2);
 	    			url += "%3D";
 	    		}
-	    		fileUrls.put(item.getName(), url);
+	    		MaterialObject material = new MaterialObject(bucket, item.getName());
+	    		material.setUrl(url);
+	    		materials.add(material);
 	        }
 		} catch (FileUploadException e) {
 			// TODO Auto-generated catch block
@@ -191,7 +191,7 @@ public final class BucketManager{
 		{
 			return null;
 		}
-		return fileUrls;
+		return materials;
 	}
 	
 	/**
@@ -201,7 +201,7 @@ public final class BucketManager{
 	 * @param file
 	 * @return 返回文件的url
 	 */
-	public String putFile(BaiduBCS bcs, String bucket, File file)
+	public MaterialObject putFile(BaiduBCS bcs, String bucket, File file)
 	{      
     	ObjectMetadata metadata = new ObjectMetadata();
 		metadata.setContentLength(file.length());
@@ -218,7 +218,9 @@ public final class BucketManager{
 			url += "%3D";
 		}
 
-		return url;
+		MaterialObject material = new MaterialObject(bucket, file.getName());
+		material.setUrl(url);
+		return material;
 	}
 
 }
