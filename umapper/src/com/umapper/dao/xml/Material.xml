@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.umapper.dao.IMaterialDao"> 
+<!-- 这里namespace必须是UserMapper接口的路径，不然要运行的时候要报错 “is not known to the MapperRegistry”--> 
+    <!-- 这里的id必须和UserMapper接口中的接口方法名相同，不然运行的时候也要报错 --> 
+    <select id="getMaterial" resultType="Material" parameterType="java.lang.String"> 
+        select * from material where url=#{url}
+    </select> 
+    
+    <insert id="addMaterial" parameterType="Material">
+    	insert into material(url, bucket, filename, time) values(#{url}, #{bucket}, #{filename}, #{time})
+    </insert>
+    
+    <delete id="deleteMaterial" parameterType="java.lang.String">
+    	delete from material where url=#{url}
+    </delete>
+</mapper> 

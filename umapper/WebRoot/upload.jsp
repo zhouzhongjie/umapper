@@ -21,11 +21,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
   <body>
-    <form action="../FileManager" method="post"
+    <form action="../FileManager?action=upload" method="post"
         enctype="multipart/form-data">
         <input type="file" name="file1" id="file1" />
         <input type="file" name="file2" id="file2" />
         <input type="submit" value="上传" />        
+    </form>
+    
+    <br><br>
+    <form action="../FileManager?action=delete" method="post" >
+    	URL:<input type="text"  name="url"/>
+    	<input type="submit" value="删除" />
     </form>
   </body>
   </body>

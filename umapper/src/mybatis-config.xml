@@ -11,6 +11,7 @@
 			<!--这里给实体类取别名，方便在mapper配置文件中使用-->
 			<typeAlias alias="User" type="com.umapper.po.User"/>
 			<typeAlias alias="WeiSite" type="com.umapper.po.WeiSite"/>
+			<typeAlias alias="Material" type="com.umapper.po.Material" />
 		</typeAliases>
 		<environments default="development">
 			<environment id="development">
@@ -19,7 +20,7 @@
 					<property name="driver" value="com.mysql.jdbc.Driver"/>
 					<property name="url" value="jdbc:mysql://localhost:3306/test"/>
 					<property name="username" value="root"/>
-					<property name="password" value=""/>
+					<property name="password" value="111"/>
 				</dataSource>
 			</environment>
 		</environments>
@@ -40,5 +41,6 @@
 		<mappers>
 			<mapper resource="com/umapper/dao/xml/User.xml"/> 
 			<mapper resource="com/umapper/dao/xml/WeiSite.xml"/> 
+			<mapper resource="com/umapper/dao/xml/Material.xml"/>
 		</mappers>
 	</configuration>
