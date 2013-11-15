@@ -10,14 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.jdom.JDOMException;
 
-import com.umapper.dao.UserDao;
-import com.umapper.po.User;
 import com.umapper.service.UserService;
-import com.umapper.util.MyBatisUtil;
 
 
 /**

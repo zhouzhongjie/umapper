@@ -1,9 +1,6 @@
 package com.umapper.action;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -12,18 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
-import net.sf.json.JSONObject;
 
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
-import org.jdom.JDOMException;
-
-import com.umapper.dao.UserDao;
-import com.umapper.po.User;
 import com.umapper.po.WeiSite;
-import com.umapper.service.UserService;
 import com.umapper.service.WeiSiteService;
-import com.umapper.util.MyBatisUtil;
 
 
 /**
