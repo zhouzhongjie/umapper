@@ -1,12 +1,11 @@
 package com.umapper.baidu.bcs;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,7 +22,6 @@ import com.baidu.inf.iis.bcs.model.Empty;
 import com.baidu.inf.iis.bcs.model.ObjectListing;
 import com.baidu.inf.iis.bcs.model.ObjectMetadata;
 import com.baidu.inf.iis.bcs.model.ObjectSummary;
-import com.baidu.inf.iis.bcs.model.X_BS_ACL;
 import com.baidu.inf.iis.bcs.request.CreateBucketRequest;
 import com.baidu.inf.iis.bcs.request.DeleteObjectRequest;
 import com.baidu.inf.iis.bcs.request.GenerateUrlRequest;
@@ -59,13 +57,7 @@ public final class BucketManager{
 		return baiduBCS;
 	}
 	
-	public BaiduBCSResponse<Empty> putBucket(String bucket)
-	{
-		BaiduBCS bcs = getBaiduBCS();
-		return bcs.createBucket(new CreateBucketRequest(bucket, X_BS_ACL.PublicRead));
-	}
-
-	public List<String> listFolder(BaiduBCS baiduBCS) {
+	public List<String> listBucket(BaiduBCS baiduBCS) {
 		ListBucketRequest listBucketRequest = new ListBucketRequest();
 		BaiduBCSResponse<List<BucketSummary>> response = baiduBCS.listBucket(listBucketRequest);
 		List<String> res = new ArrayList<String>();
@@ -75,13 +67,25 @@ public final class BucketManager{
 		return res;
 	}
 	
-
-	public String createFolder(BaiduBCS bcs, String name)
+	/**
+	 * 新建一个bucket
+	 * @param bcs
+	 * @param name bucket名字
+	 * @return
+	 */
+	public String createBucket(BaiduBCS bcs, String name)
 	{
 		BaiduBCSResponse<Empty> response = bcs.createBucket(new CreateBucketRequest(name));
 		return response.getRequestId();
 	}
 	
+	
+	/**
+	 * 列出某bucket下的所有文件
+	 * @param bcs
+	 * @param bucket bucket名字
+	 * @return
+	 */
 	public List<String> listFiles(BaiduBCS bcs, String bucket)
 	{
 		ListObjectRequest req = new ListObjectRequest(bucket);
@@ -92,19 +96,34 @@ public final class BucketManager{
 		{
 			resList.add(os.getName());
 		}
+		
 		return resList;
 	}
 	
+	/**
+	 * 判断某个文件在bucket下是否存在
+	 * @param bcs
+	 * @param bucket	bucket名字
+	 * @param file	文件名
+	 * @return
+	 */
 	public boolean isFileExist(BaiduBCS bcs, String bucket, String file)
 	{
 		List<String> files = listFiles(bcs, bucket);
-		if (files.contains(files))
+		if (files.contains(file))
 		{
 			return true;
 		}
 		return false;
 	}
 	
+	/**
+	 * 删除某个bucket下的某个文件
+	 * @param bcs
+	 * @param bucket
+	 * @param file	文件名
+	 * @return
+	 */
 	public String deleteFile(BaiduBCS bcs, String bucket, String file)
 	{
 		DeleteObjectRequest req = new DeleteObjectRequest(bucket, file);
@@ -112,12 +131,20 @@ public final class BucketManager{
 		return rsp.getRequestId();
 	}
 	
-	public Map<String, String> putFile(BaiduBCS bcs, String bucket, HttpServletRequest request)
+	/**
+	 * 用于处理浏览器上传文件的请求，将请求中的文件都上传到bcs上
+	 * @param bcs
+	 * @param bucket
+	 * @param request 文件上传的post请求
+	 * @return
+	 */
+	public List<MaterialObject> putFile(BaiduBCS bcs, String bucket, HttpServletRequest request)
 	{
         DiskFileItemFactory diskFactory = new DiskFileItemFactory();       
         ServletFileUpload upload = new ServletFileUpload(diskFactory);  
         List fileItems = null;
-        Map<String, String> fileUrls = new HashMap<String, String>();
+        List<MaterialObject> materials = new ArrayList<MaterialObject>();
+        
 		try {
 			fileItems = upload.parseRequest(request);
 	        Iterator iter = fileItems.iterator();  
@@ -128,18 +155,34 @@ public final class BucketManager{
 	        	if (item.isFormField())
 	        	{
 	        		continue;
+	        	}	        	
+	        	if (item.getName().isEmpty())
+	        	{
+	        		continue;
 	        	}
+	    		String object = "/" + item.getName();
+	    		if (isFileExist(bcs, bucket, object))
+	    		{
+	    			continue;
+	    		}
 	        	ObjectMetadata metadata = new ObjectMetadata();
 	    		metadata.setContentLength(item.getSize());
 	    		metadata.setContentType(item.getContentType());
 	    		metadata.setContentEncoding("ASCII");
-	    		String object = "/" + item.getName();
 	    		PutObjectRequest objReq = new PutObjectRequest(bucket, "/" + item.getName(), item.getInputStream(), metadata);
 	    		BaiduBCSResponse<ObjectMetadata> res = bcs.putObject(objReq);
 	    		item.getInputStream().close();
 	    		GenerateUrlRequest urlReq = new GenerateUrlRequest(HttpMethodName.POST, bucket, object);
-	    		String url = URLDecoder.decode(bcs.generateUrl(urlReq));
-	    		fileUrls.put(item.getName(), url);
+	    		String urlOrigin = URLDecoder.decode(bcs.generateUrl(urlReq));
+	    		String url = urlOrigin;
+	    		if (urlOrigin.endsWith("="))
+	    		{
+	    			url = urlOrigin.substring(0, urlOrigin.length()-2);
+	    			url += "%3D";
+	    		}
+	    		MaterialObject material = new MaterialObject(bucket, item.getName());
+	    		material.setUrl(url);
+	    		materials.add(material);
 	        }
 		} catch (FileUploadException e) {
 			// TODO Auto-generated catch block
@@ -148,7 +191,36 @@ public final class BucketManager{
 		{
 			return null;
 		}
-		return fileUrls;
+		return materials;
+	}
+	
+	/**
+	 * 上传一个文件到bucket下
+	 * @param bcs
+	 * @param bucket
+	 * @param file
+	 * @return 返回文件的url
+	 */
+	public MaterialObject putFile(BaiduBCS bcs, String bucket, File file)
+	{      
+    	ObjectMetadata metadata = new ObjectMetadata();
+		metadata.setContentLength(file.length());
+		metadata.setContentEncoding("ASCII");
+		String object = "/" + file.getName();
+		PutObjectRequest objReq = new PutObjectRequest(bucket, object, file);
+		BaiduBCSResponse<ObjectMetadata> res = bcs.putObject(objReq);
+		GenerateUrlRequest urlReq = new GenerateUrlRequest(HttpMethodName.POST, bucket, object);
+		String urlOrigin = URLDecoder.decode(bcs.generateUrl(urlReq));
+		String url = urlOrigin;
+		if (urlOrigin.endsWith("="))
+		{
+			url = urlOrigin.substring(0, urlOrigin.length()-2);
+			url += "%3D";
+		}
+
+		MaterialObject material = new MaterialObject(bucket, file.getName());
+		material.setUrl(url);
+		return material;
 	}
 
 }

@@ -2,6 +2,7 @@ package com.umapper.action;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.baidu.inf.iis.bcs.BaiduBCS;
 import com.umapper.baidu.bcs.BucketManager;
+import com.umapper.baidu.bcs.MaterialObject;
 
 public class FileManager extends HttpServlet{
 
@@ -35,13 +37,12 @@ public class FileManager extends HttpServlet{
 		// TODO Auto-generated method stub
 		BaiduBCS bcs = BucketManager.getInstance().getBaiduBCS();
 		
-		Map<String, String> files = BucketManager.getInstance().putFile(bcs, bucket, req);
+		List<MaterialObject> materials = BucketManager.getInstance().putFile(bcs, bucket, req);
 		StringBuffer sb = new StringBuffer();
-		Set<String> keys = files.keySet();
-		for (String key : keys)
+		for (MaterialObject m : materials)
 		{
-			sb.append("file:").append(key);
-			sb.append(", url=").append(files.get(key)).append("\n");
+			sb.append("file:").append(m.getName());
+			sb.append(", url=").append(m.getUrl()).append("\n");
 		}
 		PrintWriter out = resp.getWriter();
 		out.println("<html><body>" + "<br>" + sb.toString() + "</body></html>");
