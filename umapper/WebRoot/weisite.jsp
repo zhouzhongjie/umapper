@@ -227,7 +227,6 @@
 	<script src="charisma/js/jquery.history.js"></script>
 	<!-- application script for Charisma demo -->
 	<script src="charisma/js/charisma.js"></script>
-	<script src="AjaxFileUploader/jquery.js"></script>
 	<script src="AjaxFileUploader/ajaxfileupload.js"></script>
 	
 	<script type="text/javascript">
@@ -242,6 +241,7 @@
 				  success: function (data, status){//上传成功
 				    if(data.success == 1){
 				      //从data中获取数据，进行处理
+				      　$("#txtPicUrl").val(data.url);
 				    } else{
 				      alert('上传失败！');
 				    }
@@ -267,6 +267,7 @@
 			             name : $("#txtName").val(),
 			             type : $("#selType").val(),
 			             content : $("#txtContent").val(),
+			             picurl : $("#txtPicUrl").val()
 			    },  
 			    type:'post',  
 			    cache:false,  

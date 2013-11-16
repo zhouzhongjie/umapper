@@ -78,7 +78,9 @@ public class WeiSiteAction extends HttpServlet {
 		System.out.println("content:"+content);
 		
 		//TODO:处理上传的图片，获取图片的url
-		String picurl = "http://localhost:8080/charisma/img/logo20.png";
+//		String picurl = "http://localhost:8080/charisma/img/logo20.png";
+		String picurl = request.getParameter("picurl");;
+		System.out.println("picurl:"+picurl);
 		
 		//TODO: 生成静态页面，返回静态页面的url
 		String url = "http://localhost:8080/weisite.jsp";

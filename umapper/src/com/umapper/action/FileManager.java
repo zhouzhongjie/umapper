@@ -69,6 +69,7 @@ public class FileManager extends HttpServlet{
 	private void upload(HttpServletRequest req, HttpServletResponse resp)
 	{
 		BaiduBCS bcs = BucketManager.getInstance().getBaiduBCS();
+		String url = "";
 		
 		List<Material> materials = BucketManager.getInstance().putFile(bcs, bucket, req);
 		StringBuffer sb = new StringBuffer();
@@ -78,6 +79,16 @@ public class FileManager extends HttpServlet{
 			sb.append(", url=").append(m.getUrl()).append("\n");
 			MaterialService.addMaterial(m);
 			System.out.println(m.getUrl());
+			url = m.getUrl();
+		}
+		
+		String result = "{\"url\": \""+url+"\",\"success\": 1}";
+		resp.setContentType("text/html; charset=UTF-8");
+		try {
+			resp.getWriter().write(result);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 //		try {
