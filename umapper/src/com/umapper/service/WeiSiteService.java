@@ -49,7 +49,7 @@ public class WeiSiteService {
 		}
 	}
 
-	public List<WeiSite> geWeiSiteList() {
+	public List<WeiSite> getWeiSiteList() {
 		SqlSession sqlSession = sqlSessionFactory.openSession();
 		try {
 			IWeiSiteDao mapper = sqlSession.getMapper(IWeiSiteDao.class);
@@ -58,6 +58,19 @@ public class WeiSiteService {
 		} finally {
 			sqlSession.close();
 
+		}
+	}
+	
+	public void addWeiSite(WeiSite site) {
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		try {
+			IWeiSiteDao mapper = sqlSession.getMapper(IWeiSiteDao.class);
+			mapper.addWeiSite(site);
+			sqlSession.commit();
+			System.out.println("add weisite successfully!");
+		} finally {
+			sqlSession.close();
+			
 		}
 	}
 

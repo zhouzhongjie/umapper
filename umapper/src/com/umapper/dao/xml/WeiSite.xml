@@ -8,4 +8,19 @@
     <select id="getWeiSiteList" resultType="WeiSite" parameterType="java.lang.String"> 
         select * from weisite
     </select> 
+    
+    <!-- 插入微网站 -->
+	<insert id="addWeiSite" parameterType="WeiSite">
+			INSERT INTO weisite (id,
+	                         		          name,
+	                         		          type,
+	                         		          url,
+	                         		          description)
+				  VALUES   (#{id},
+				              #{name},
+				              #{type},
+				              #{url},
+				              #{description})
+	</insert>
+	    
 </mapper> 

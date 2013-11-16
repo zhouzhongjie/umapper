@@ -4,7 +4,6 @@ public class WeiSite {
 	private String name;
 	private String url;
 	private String type;
-	private String picture;
 	private String description;
 	private String id;
 	
@@ -38,14 +37,6 @@ public class WeiSite {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	public String getPicture() {
-		return picture;
-	}
-
-	public void setPicture(String picture) {
-		this.picture = picture;
 	}
 
 	public String getDescription() {

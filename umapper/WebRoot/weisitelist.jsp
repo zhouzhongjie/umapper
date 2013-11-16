@@ -205,11 +205,11 @@
 				"bProcessing": true,
 				"bServerSide": true,
 				"sPaginationType": "full_numbers",
-				"sAjaxSource": "weisite?action=getweisite",
+				"sAjaxSource": "weisite?action=loadsitelist",
 			    "sServerMethod": "POST",
 			    "fnRowCallback": function( nRow, aData, iDisplayIndex ) {
 		            /* Append the grade to the default row class name */
-		                $('td:eq(4)', nRow).html( '<a href="weisite.jsp">修改</a>' );
+		                $('td:eq(4)', nRow).html( '<a href="weisite.jsp">添加</a>' );
 		        },
 				} );	
 			} );

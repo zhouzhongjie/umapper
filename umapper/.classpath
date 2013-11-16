@@ -19,5 +19,7 @@
 	<classpathentry kind="lib" path="lib/ognl-3.0.6.jar"/>
 	<classpathentry kind="lib" path="lib/struts2-core-2.3.15.3.jar"/>
 	<classpathentry kind="lib" path="lib/xwork-core-2.3.15.3.jar"/>
+	<classpathentry kind="lib" path="lib/log4j-adapter-1.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/flexjson.jar"/>
 	<classpathentry kind="output" path="WebRoot/WEB-INF/classes"/>
 </classpath>

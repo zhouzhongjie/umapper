@@ -100,10 +100,10 @@
 								<div class="control-group">
 								<label class="control-label" for="selectError">type</label>
 								<div class="controls">
-								  <select id="selectError" data-rel="chosen">
-									<option>十宫格</option>
-									<option selected>单图文</option>
-									<option>三宫格</option>
+								  <select data-rel="chosen" id="selType">
+									<option value="十宫格">十宫格</option>
+									<option value ="单图文" selected>单图文</option>
+									<option value = "三宫格">三宫格</option>
 								  </select>
 								</div>
 							  </div>
@@ -111,7 +111,7 @@
 								<label class="control-label" for="appendedInputButton">name</label>
 								<div class="controls">
 								  <div class="input-append">
-									<input id="appendedInputButton" size="16" type="text"><button class="btn" type="button">Go!</button>
+									<input size="16" type="text" id="txtName"><button class="btn" type="button">Go!</button>
 								  </div>
 								</div>
 							  </div>
@@ -119,24 +119,24 @@
 								<label class="control-label" for="appendedInputButtons">url</label>
 								<div class="controls">
 								  <div class="input-append">
-									<input id="appendedInputButtons" size="16" type="text"><button class="btn" type="button">Search</button><button class="btn" type="button">Options</button>
+									<input id="appendedInputButtons" size="16" type="text"><button class="btn" type="button">预览</button>
 								  </div>
 								</div>
 							  </div>
 							  <div class="control-group">
-								<label class="control-label">图片上传</label>
+								<label class="control-label">图片</label>
 								<div class="controls">
 								  <input type="file">
 								</div>
 							  </div>
 							  <div class="control-group">
-								  <label class="control-label" for="textarea2">描述</label>
+								  <label class="control-label" for="textarea2">content</label>
 								  <div class="controls">
-									<textarea class="cleditor" id="textarea2" rows="3"></textarea>
+									<textarea class="cleditor" id="txtContent" rows="3"></textarea>
 								  </div>
 							  </div>
 							  <div class="form-actions" style="margin-top:5px">
-								<button type="submit" class="btn btn-primary">Save</button>
+								<button type="button" class="btn btn-primary" id="btnSave">Save</button>
 								<button class="btn">Cancel</button>
 							  </div>
 							</fieldset>
@@ -225,6 +225,41 @@
 	<script src="charisma/js/jquery.history.js"></script>
 	<!-- application script for Charisma demo -->
 	<script src="charisma/js/charisma.js"></script>
+	
+	<script type="text/javascript">
+		$("#btnSave").click(function(){
+			var aj = $.ajax( {  
+			    url:'weisite?action=addweisite',// 跳转到 action  
+			    data:{  
+			             name : $("#txtName").val(),
+			             type : $("#selType").val(),
+			             content : $("#txtContent").val(),
+			    },  
+			    type:'post',  
+			    cache:false,  
+			    dataType:'json',  
+			    success:function(data) {  
+			        if(data.errorcode == 0 ){  
+			            // view("修改成功！");  
+			            alert(data.msg);  
+			            
+			        }
+			     },  
+			     error : function() {  
+			          // view("异常！");  
+			          alert("异常！");  
+			     }  
+			}); 
+			
+			
+			
+		});
+	
+	
+
+
+	
+	</script>
 	
 </body>
 </html>

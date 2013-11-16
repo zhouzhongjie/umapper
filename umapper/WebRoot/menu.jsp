@@ -9,7 +9,7 @@
 			<li><a class="ajax-link" href="form.html"><i class="icon-edit"></i><span class="hidden-tablet"> Forms</span></a></li>
 			<li><a class="ajax-link" href="chart.html"><i class="icon-list-alt"></i><span class="hidden-tablet"> Charts</span></a></li>
 			<li><a class="ajax-link" href="typography.html"><i class="icon-font"></i><span class="hidden-tablet"> Typography</span></a></li>
-			<li><a class="ajax-link" href="weisitelist.jsp"><i class="icon-picture"></i><span class="hidden-tablet">微网站</span></a></li>
+			<li><a class="ajax-link" href="weisite?action=loadsitepage"><i class="icon-picture"></i><span class="hidden-tablet">微网站</span></a></li>
 			<li class="nav-header hidden-tablet">Sample Section</li>
 			<li><a class="ajax-link" href="table.html"><i class="icon-align-justify"></i><span class="hidden-tablet"> Tables</span></a></li>
 			<li><a class="ajax-link" href="calendar.html"><i class="icon-calendar"></i><span class="hidden-tablet"> Calendar</span></a></li>
