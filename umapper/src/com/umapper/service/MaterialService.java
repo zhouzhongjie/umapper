@@ -10,42 +10,45 @@ import com.umapper.util.MyBatisUtil;
 public class MaterialService {
 
 	static SqlSessionFactory sqlSessionFactory = null; 
+	static SqlSession sqlSession = null;
+	static IMaterialDao mapper = null;
     static { 
-       sqlSessionFactory = MyBatisUtil.getSqlSessionFactory(); 
+       sqlSessionFactory = MyBatisUtil.getSqlSessionFactory();
+       sqlSession = sqlSessionFactory.openSession();
+	   mapper = sqlSession.getMapper(IMaterialDao.class); 
+    }
+    
+    public static void start()
+    {
+       sqlSession.close();
+       sqlSession = sqlSessionFactory.openSession();
+ 	   mapper = sqlSession.getMapper(IMaterialDao.class);     	
+    }
+    
+    public static void stop()
+    {
+    	sqlSession.close();
     }
     
     public static Material getMaterial(String url) { 
-       SqlSession sqlSession = sqlSessionFactory.openSession(); 
-       try { 
-    	   IMaterialDao mapper = sqlSession.getMapper(IMaterialDao.class); 
-    	   Material material = mapper.getMaterial(url); 
-           return material;
-       } finally { 
-           sqlSession.close();	           
-       }
+	   Material material = mapper.getMaterial(url); 
+       return material;
     } 
     
     public static void addMaterial(Material material)
     {
-        SqlSession sqlSession = sqlSessionFactory.openSession(); 
-        try { 
-     	   IMaterialDao mapper = sqlSession.getMapper(IMaterialDao.class); 
-     	   mapper.addMaterial(material); 
-     	   sqlSession.commit();
-        } finally { 
-            sqlSession.close();	           
-        }
+    	Material m = mapper.getMaterial(material.getUrl());
+    	if (m != null)
+    	{
+    		return;
+    	}
+ 	   mapper.addMaterial(material); 
+ 	   sqlSession.commit();
     }
     
     public static void deleteMaterial(String url)
     {
-        SqlSession sqlSession = sqlSessionFactory.openSession(); 
-        try { 
-     	   IMaterialDao mapper = sqlSession.getMapper(IMaterialDao.class); 
-     	   mapper.deleteMaterial(url); 
-     	   sqlSession.commit();
-        } finally { 
-            sqlSession.close();	           
-        }    	
+ 	   mapper.deleteMaterial(url); 
+ 	   sqlSession.commit();
     }
 }
