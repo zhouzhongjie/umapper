@@ -126,7 +126,9 @@
 							  <div class="control-group">
 								<label class="control-label">图片</label>
 								<div class="controls">
-								  <input type="file">
+								  <input type="file" id="filePic">
+								  <input size="16" type="text" id="txtPicUrl">
+								  <button class="btn" type="button" id="btnUpload">upload</button>
 								</div>
 							  </div>
 							  <div class="control-group">
@@ -225,8 +227,38 @@
 	<script src="charisma/js/jquery.history.js"></script>
 	<!-- application script for Charisma demo -->
 	<script src="charisma/js/charisma.js"></script>
+	<script src="AjaxFileUploader/ajaxfileupload.js"></script>
 	
 	<script type="text/javascript">
+		$("#btnUpload").click(function(){
+			var upload = $.ajaxFileUpload({
+				  url:'FileManager?action=upload',//服务器端程序
+				  secureuri:false,
+				  fileElementId:'filePic',//input框的ID
+				  dataType: 'json',//返回数据类型
+				  beforeSend:function(){//上传前需要处理的工作，如显示Loading...
+				  },
+				  success: function (data, status){//上传成功
+				    if(data.success == 1){
+				      //从data中获取数据，进行处理
+				    } else{
+				      alert('上传失败！');
+				    }
+				  },
+				  handleError: function( s, xhr, status, e ) {
+					    // If a local callback was specified, fire it
+					    if ( s.error ) {
+					        s.error.call( s.context || window, xhr, status, e );
+					    }
+					    // Fire the global callback
+					    if ( s.global ) {
+					        (s.context ? jQuery(s.context) : jQuery.event).trigger( "ajaxError", [xhr, s, e] );
+					    }
+					}
+				});
+		});
+	
+	
 		$("#btnSave").click(function(){
 			var aj = $.ajax( {  
 			    url:'weisite?action=addweisite',// 跳转到 action  
@@ -250,9 +282,6 @@
 			          alert("异常！");  
 			     }  
 			}); 
-			
-			
-			
 		});
 	
 	

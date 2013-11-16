@@ -77,6 +77,7 @@ public class FileManager extends HttpServlet{
 			sb.append("file:").append(m.getFileName());
 			sb.append(", url=").append(m.getUrl()).append("\n");
 			MaterialService.addMaterial(m);
+			System.out.println(m.getUrl());
 		}
 		try {
 			PrintWriter out = resp.getWriter();
