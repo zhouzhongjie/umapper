@@ -126,8 +126,8 @@
 							  <div class="control-group">
 								<label class="control-label">图片</label>
 								<div class="controls">
-								  <input type="file" id="filePic">
-								  <input size="16" type="text" id="txtPicUrl">
+								  <input type="file" name="filePic" id="filePic">
+								  <input size="16" type="text" name="txtPicUrl" id="txtPicUrl">
 								  <button class="btn" type="button" id="btnUpload">upload</button>
 								</div>
 							  </div>
@@ -227,6 +227,7 @@
 	<script src="charisma/js/jquery.history.js"></script>
 	<!-- application script for Charisma demo -->
 	<script src="charisma/js/charisma.js"></script>
+	<script src="AjaxFileUploader/jquery.js"></script>
 	<script src="AjaxFileUploader/ajaxfileupload.js"></script>
 	
 	<script type="text/javascript">

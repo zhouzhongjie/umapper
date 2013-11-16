@@ -79,15 +79,16 @@ public class FileManager extends HttpServlet{
 			MaterialService.addMaterial(m);
 			System.out.println(m.getUrl());
 		}
-		try {
-			PrintWriter out = resp.getWriter();
-			out.println("<html><body>" + "<br>" + sb.toString() + "</body></html>");
-			out.flush();
-			out.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+//		try {
+//			PrintWriter out = resp.getWriter();
+//			out.println("<html><body>" + "<br>" + sb.toString() + "</body></html>");
+//			out.flush();
+//			out.close();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 }
