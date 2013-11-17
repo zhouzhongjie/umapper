@@ -20,7 +20,7 @@
 					<property name="driver" value="com.mysql.jdbc.Driver"/>
 					<property name="url" value="jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&amp;"/>
 					<property name="username" value="root"/>
-					<property name="password" value=""/>
+					<property name="password" value="root"/>
 				</dataSource>
 			</environment>
 		</environments>
@@ -42,5 +42,6 @@
 			<mapper resource="com/umapper/dao/xml/User.xml"/> 
 			<mapper resource="com/umapper/dao/xml/WeiSite.xml"/> 
 			<mapper resource="com/umapper/dao/xml/Material.xml"/>
+			<mapper resource="com/umapper/dao/xml/Template.xml"/>
 		</mappers>
 	</configuration>
