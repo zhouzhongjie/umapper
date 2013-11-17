@@ -12,6 +12,7 @@
 			<typeAlias alias="User" type="com.umapper.po.User"/>
 			<typeAlias alias="WeiSite" type="com.umapper.po.WeiSite"/>
 			<typeAlias alias="Material" type="com.umapper.po.Material" />
+			<typeAlias alias="Template" type="com.umapper.po.Template" />
 		</typeAliases>
 		<environments default="development">
 			<environment id="development">

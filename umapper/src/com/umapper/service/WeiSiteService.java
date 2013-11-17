@@ -13,6 +13,8 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.umapper.dao.IWeiSiteDao;
 import com.umapper.po.WeiSite;
 import com.umapper.util.Common;
@@ -66,6 +68,7 @@ public class WeiSiteService {
 		try {
 			IWeiSiteDao mapper = sqlSession.getMapper(IWeiSiteDao.class);
 			mapper.addWeiSite(site);
+			generateHtml(site);
 			sqlSession.commit();
 			System.out.println("add weisite successfully!");
 		} finally {
@@ -76,10 +79,18 @@ public class WeiSiteService {
 
 	public void generateHtml(WeiSite site) {
 		String templateFileName = tempMap.get(site.getType());
-		String description = site.getDescription();
 		//todo
-		
+		String type = site.getType();
 		Map<String, String> propMap = new HashMap<String, String>();
+		String description = site.getDescription();
+		JsonParser jsonParser = new JsonParser();
+		JsonObject obj = jsonParser.parse(description).getAsJsonObject();
+		if("单图文".equals(type))
+		{
+			propMap.put("picurl", obj.get("picurl").getAsString());
+			propMap.put("content", obj.get("content").getAsString());
+		}
+		
 		String siteUrl = StaticDataPool.SITE_ROOT + File.separator
 				+ site.getId() + File.separator + StaticDataPool.SITE_HOMEPAGE;
 		geneHtmlFile(templateFileName, propMap, siteUrl);
