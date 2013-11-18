@@ -77,7 +77,7 @@ public class WeiSiteService {
 		}
 	}
 
-	public void generateHtml(WeiSite site) {
+	public String generateHtml(WeiSite site) {
 		String templateFileName = tempMap.get(site.getType());
 		//todo
 		String type = site.getType();
@@ -94,6 +94,8 @@ public class WeiSiteService {
 		String siteUrl = StaticDataPool.SITE_ROOT + File.separator
 				+ site.getId() + File.separator + StaticDataPool.SITE_HOMEPAGE;
 		geneHtmlFile(templateFileName, propMap, siteUrl);
+		
+		return siteUrl;
 	}
 
 	/**

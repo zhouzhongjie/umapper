@@ -97,9 +97,14 @@ public class WeiSiteAction extends HttpServlet {
 		site.setName(name);
 		site.setType(type);
 		site.setDescription(description);
-		site.setUrl(url);
 		
-		new WeiSiteService().addWeiSite(site);
+		WeiSiteService service = new WeiSiteService();
+		url = service.generateHtml(site);
+		
+		String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+"/"; 
+		site.setUrl(basePath+url);
+		
+		service.addWeiSite(site);
 		
 		String result = "{\"msg\": \"添加成功\",\"errorcode\": 0}";
 		response.setContentType("text/html; charset=UTF-8");
