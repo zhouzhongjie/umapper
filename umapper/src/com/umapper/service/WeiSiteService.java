@@ -43,8 +43,8 @@ public class WeiSiteService {
 			cfg.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
 			// 临时用map存储template
-			tempMap.put("0", "singlePic.ftl");
-			tempMap.put("1", "twoPic.ftl");
+			tempMap.put("单图文", "singlePic.ftl");
+			tempMap.put("十宫格", "twoPic.ftl");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

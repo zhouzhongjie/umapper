@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import com.umapper.po.WeiSite;
 import com.umapper.service.WeiSiteService;
@@ -85,8 +86,10 @@ public class WeiSiteAction extends HttpServlet {
 		//TODO: 生成静态页面，返回静态页面的url
 		String url = "http://localhost:8080/weisite.jsp";
 		
-		
-		String description = "{picurl:"+picurl+",content:"+content+"}";
+		JSONObject desc = new JSONObject();
+		desc.put("picurl", picurl);
+		desc.put("content", content);
+		String description = desc.toString();
 		//TODO: 存入数据库
 		
 		WeiSite site = new WeiSite();
