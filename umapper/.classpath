@@ -5,7 +5,7 @@
 	<classpathentry kind="con" path="com.baidu.bdt.bae.java.SDK_CONTAINER"/>
 	<classpathentry kind="lib" path="lib/jdom.jar"/>
 	<classpathentry kind="lib" path="lib/log4j-1.2.16.jar"/>
-	<classpathentry kind="lib" path="lib/mybatis-3.0.5.jar"/>
+	<classpathentry kind="lib" path="lib/mybatis-3.0.5.jar" sourcepath="C:/Users/lcy/.m2/repository/org/mybatis/mybatis/3.0.5/mybatis-3.0.5-sources.jar"/>
 	<classpathentry kind="lib" path="lib/commons-fileupload-1.3.jar"/>
 	<classpathentry kind="lib" path="lib/commons-io-2.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/bcs-sdk-java_1.4.5.jar"/>

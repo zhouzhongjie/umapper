@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper 
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.umapper.dao.IAutoReplyDao"> 
+     
+    <select id="getKeys" resultType="hashmap" parameterType="java.lang.String"> 
+        select key matchrule autoreply where user=#{user}
+    </select> 
+    
+    <select id="getReplyByKey" resultType="java.lang.String">
+    	select type,content from autoreply where user=#{0} and key=#{1}
+    </select>
+    
+    <delete id="deleteRule" >
+    	delete from autoreply where user=#{0} and key=#{1}
+    </delete>
+    
+    <insert id="addRule" parameterType="ReplyRule">
+    	insert into autoreply(user, key, matchrule, type, content) values(#{user}, #{key}, #{matchrule}, #{type}, #{content})
+    </insert>
+    
+    <update id="updateRule" parameterType="ReplyRule">
+    	update autoreply set type=#{type} content=#{content} where user=#{user} key=#{key} 
+    </update>
+</mapper> 
