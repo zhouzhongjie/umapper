@@ -5,22 +5,22 @@
 <mapper namespace="com.umapper.dao.IAutoReplyDao"> 
      
     <select id="getKeys" resultType="hashmap" parameterType="java.lang.String"> 
-        select key matchrule autoreply where user=#{user}
+        select keyword, matchrule from autoreply where wxurl=#{wxurl}
     </select> 
     
-    <select id="getReplyByKey" resultType="java.lang.String">
-    	select type,content from autoreply where user=#{0} and key=#{1}
+    <select id="getReplyByKey" resultType="hashmap">
+    	select msgtype,content from autoreply where wxurl=#{0} and keyword=#{1}
     </select>
     
     <delete id="deleteRule" >
-    	delete from autoreply where user=#{0} and key=#{1}
+    	delete from autoreply where wxurl=#{0} and keyword=#{1}
     </delete>
     
     <insert id="addRule" parameterType="ReplyRule">
-    	insert into autoreply(user, key, matchrule, type, content) values(#{user}, #{key}, #{matchrule}, #{type}, #{content})
+    	insert into autoreply(wxurl, keyword, matchrule, msgtype, content) values(#{wxurl}, #{keyword}, #{matchrule}, #{msgtype}, #{content})
     </insert>
     
     <update id="updateRule" parameterType="ReplyRule">
-    	update autoreply set type=#{type} content=#{content} where user=#{user} key=#{key} 
+    	update autoreply set matchrule=#{matchrule}, msgtype=#{msgtype},content=#{content} where wxurl=#{wxurl} and keyword=#{keyword} 
     </update>
 </mapper> 

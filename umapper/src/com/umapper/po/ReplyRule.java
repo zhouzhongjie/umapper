@@ -1,30 +1,30 @@
 package com.umapper.po;
 
 public class ReplyRule {
-	private String user;
-	private String key;
+	private String wxurl;
+	private String keyword;
 	private String matchrule;
-	private String type;
+	private String msgtype;
 	private String content;
 	
-	public String getUser()
+	public String getWxurl()
 	{
-		return this.user;
+		return this.wxurl;
 	}
 	
-	public void setUser(String user)
+	public void setWxurl(String wxurl)
 	{
-		this.user = user;
+		this.wxurl = wxurl;
 	}
 	
-	public String getKey()
+	public String getKeyword()
 	{
-		return this.key;
+		return this.keyword;
 	}
 	
-	public void setKey(String key)
+	public void setKeyword(String keyword)
 	{
-		this.key = key;
+		this.keyword = keyword;
 	}
 	
 	public String getMatchRule()
@@ -37,14 +37,14 @@ public class ReplyRule {
 		this.matchrule = rule;
 	}
 	
-	public String getType()
+	public String getMsgype()
 	{
-		return this.type;		
+		return this.msgtype;		
 	}
 	
-	public void setType(String type)
+	public void setMsgype(String msgtype)
 	{
-		this.type = type;
+		this.msgtype = msgtype;
 	}
 	
 	public String getContent()

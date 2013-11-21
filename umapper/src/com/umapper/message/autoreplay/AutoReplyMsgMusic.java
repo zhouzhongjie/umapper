@@ -4,7 +4,7 @@ import com.umapper.message.WxMsgConstants;
 
 public class AutoReplyMsgMusic extends AutoReplyMsg{
 
-	public AutoReplyMsgMusic(String key) {
+	public AutoReplyMsgMusic() {
 		// TODO Auto-generated constructor stub
 		type = WxMsgConstants.MSGTYPE_MUSIC;
 	}
@@ -19,16 +19,9 @@ public class AutoReplyMsgMusic extends AutoReplyMsg{
 	@Override
 	public void addContent(String title, String desp, String url1, String url2)
 	{
-		jsonReplay.put(WxMsgConstants.ATTR_MUSIC_TITLE, title);
-		jsonReplay.put(WxMsgConstants.ATTR_MUSIC_DESP, desp);
-		jsonReplay.put(WxMsgConstants.ATTR_MUSIC_MUSIC_URL, url1);
-		jsonReplay.put(WxMsgConstants.ATTR_MUSIC_HQMUSIC_URL, url2);
-	}
-
-
-	@Override
-	public void addContent(String desp, String content) {
-		// TODO Auto-generated method stub
-		
+		replyObj.put(WxMsgConstants.ATTR_MUSIC_TITLE, title);
+		replyObj.put(WxMsgConstants.ATTR_MUSIC_DESP, desp);
+		replyObj.put(WxMsgConstants.ATTR_MUSIC_MUSIC_URL, url1);
+		replyObj.put(WxMsgConstants.ATTR_MUSIC_HQMUSIC_URL, url2);
 	}
 }

@@ -1,5 +1,6 @@
 package com.umapper.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,35 +36,38 @@ public class AutoReplayServie {
     }
     
     /**
-     * 添加一个自定义回复规则
-     * @param user 用户
-     * @param key	关键词与匹配规则
-     * @param replay	回复内容
+     * 添加一个规则，如果规则已存在则更新已有规则
+     * @param user
+     * @param keywords
+     * @param matchrule
+     * @param msgtype
+     * @param msgContent
      */
-    public static void addReplyRule(String user, AutoReplyKey replyKey, AutoReplyMsg replyMsg)
+    public static void addReplyRule(String user, String keywords, String matchrule, 
+    		AutoReplyMsg replyMsg)
     {
-    	String[] keys = replyKey.getKeys();
+    	String[] keys = keywords.split(",|，");
     	
     	for (String key : keys)
     	{
+    		key.trim();
     		ReplyRule rule = new ReplyRule();
-    		rule.setUser(user);
-    		rule.setKey(key);
-    		rule.setMatchRule(replyKey.getMatchRule());
-    		rule.setType(replyMsg.getType());
+    		rule.setWxurl(user);
+    		rule.setKeyword(key);
+    		rule.setMatchRule(matchrule);
+    		rule.setMsgype(replyMsg.getType());
     		rule.setContent(replyMsg.getContent());
-    		
-    		//如果key已存在，则更新回复内容
-//    		if (mapper.getReplyByKey(user, key) != null)
-//    		{
-//    			mapper.updateRule(rule);
-//    		}
-//    		else
-//    		{
-//    			mapper.addRule(rule);
-//    		}
-    		mapper.addRule(rule);
+
+    		if (mapper.getReplyByKey(user, key) != null)
+    		{
+    			mapper.updateRule(rule);
+    		}
+    		else
+    		{
+    			mapper.addRule(rule);
+    		}
     	}
+		sqlSession.commit();
     }
     
     /**
@@ -81,6 +85,7 @@ public class AutoReplayServie {
         		mapper.deleteRule(user, key);
         	}    		
     	}
+		sqlSession.commit();
     }
     
     /**
@@ -88,10 +93,20 @@ public class AutoReplayServie {
      * @param user
      * @return
      */
-    public static List<HashMap<String, String>> getKeys(String user)
+    public static List<AutoReplyKey> getKeys(String user)
     {
+    	List<AutoReplyKey> msgList = new ArrayList<AutoReplyKey>();
     	List<HashMap<String, String>> keyList = mapper.getKeys(user);
-    	return keyList;
+    	
+    	AutoReplyKey keyrule = null;
+    	for (HashMap<String, String> key : keyList)
+    	{
+    		String keyword = key.get("keyword");
+    		String matchrule = key.get("matchrule");
+    		keyrule = new AutoReplyKey(keyword, matchrule);
+    		msgList.add(keyrule);
+    	}
+		return msgList;
     }
     
     /**
@@ -107,7 +122,7 @@ public class AutoReplayServie {
     	{
     		return null;
     	}
-    	String msgType = replayRule.get("type");
+    	String msgType = replayRule.get("msgtype");
     	String msgContent = replayRule.get("content");
     	return AutoReplyMsg.generateReplay(msgType, msgContent);
     }

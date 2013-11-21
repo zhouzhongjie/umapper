@@ -7,22 +7,13 @@ import net.sf.json.JSONObject;
 
 public class AutoReplyMsgNews extends AutoReplyMsg{
 	
-	private JSONArray jsonArray = null;
 
-	public AutoReplyMsgNews(String key) {
+	public AutoReplyMsgNews() {
 		// TODO Auto-generated constructor stub
-		jsonArray = new JSONArray();
+		replyArray = new JSONArray();
 		type = WxMsgConstants.MSGTYPE_NEWS;
 	}
 		
-	/**
-	 * 不使用该接口
-	 */
-	@Override
-	public void addContent(String desp, String content)
-	{
-		
-	}
 	
 	/**
 	 * 添加图文回复的内容，可多次调用添加多个图文，第一次填添加的为主图文
@@ -40,13 +31,7 @@ public class AutoReplyMsgNews extends AutoReplyMsg{
 		json.put(WxMsgConstants.ATTR_NEWS_PICURL, url1);
 		json.put(WxMsgConstants.ATTR_NEWS_SUBURL, url2);
 		
-		jsonArray.add(json);
+		replyArray.add(json);
 	}
-	
-	@Override
-	public String getContent()
-	{
-		return jsonArray.toString();
-	}
-	
+		
 }

@@ -1,26 +1,35 @@
 package com.umapper.message.autoreplay;
 
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 
 public class AutoReplyMsg {
 
 	protected String type = "";
-	protected JSONObject jsonReplay = new JSONObject();
-	
+	protected JSONObject replyObj = null;
+	protected JSONArray replyArray = null;
 	public AutoReplyMsg()
 	{
+		replyObj = new JSONObject();
 	}
 	
 	protected AutoReplyMsg(String type, String content)
 	{
 		this.type = type;
-		jsonReplay = JSONObject.fromObject(content);
+		if (content.startsWith("["))
+		{
+			replyArray = JSONArray.fromObject(content);
+		}
+		else
+		{
+			replyObj = JSONObject.fromObject(content);
+		}
 	}
 	
 	/**
-	 * 生成一条回复消息
+	 * 生成一条回复消息（用于封装从数据库取出来的内容）
 	 * @param type		消息类型
 	 * @param content	消息内容，为json格式的字符串
 	 * @return
@@ -32,10 +41,9 @@ public class AutoReplyMsg {
 	
 	/**
 	 * 添加回复内容
-	 * @param desp 回复内容的描述
 	 * @param content 回复的具体内容
 	 */
-	public void addContent(String desp, String content)
+	public void addContent(String content)
 	{		
 	}
 	
@@ -55,9 +63,21 @@ public class AutoReplyMsg {
 		return this.type;
 	}
 	
+	/**
+	 * 回复内容，json格式，"content":""
+	 * @return
+	 */
 	public String getContent()
 	{
-		return jsonReplay.toString();
+		if (replyArray != null)
+		{
+			return replyArray.toString();
+		}
+		else if (replyObj != null)
+		{
+			return replyObj.toString();
+		}
+		return "";
 	}
 	
 }
